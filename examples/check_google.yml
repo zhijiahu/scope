@@ -1,0 +1,9 @@
+
+backends:
+  google: https://www.google.com
+
+scenarios:
+  - name: Image Search
+    backend: google
+    url: /imghp
+    method: get
