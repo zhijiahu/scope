@@ -1,0 +1,36 @@
+---
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-platinum:${TAG}
+    environment: ['ELASTIC_PASSWORD=${ELASTIC_PASSWORD}']
+    ports: ['9200:9200']
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG}
+    environment:
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+    ports: ['5601:5601']
+    depends_on: ['elasticsearch']
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:${TAG}
+    # If the host system has logs at "/var/log", mount them at "/mnt/log"
+    # inside the container, where Filebeat can find them.
+    volumes: ['./log:/mnt/log:ro']
+    depends_on: ['elasticsearch', 'setup_filebeat']
+
+  setup_kibana:
+    image: centos:7
+    volumes: ['./scripts/setup-kibana.sh:/usr/local/bin/setup-kibana.sh:ro']
+    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-kibana.sh | tr -d "\r" | bash']
+    environment: ['ELASTIC_PASSWORD=${ELASTIC_PASSWORD}']
+    depends_on: ['elasticsearch']
+
+  setup_filebeat:
+    image: docker.elastic.co/beats/filebeat:${TAG}
+    volumes: ['./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro']
+    command: /usr/local/bin/setup-beat.sh filebeat
+    environment: ['ELASTIC_PASSWORD=${ELASTIC_PASSWORD}']
+    depends_on: ['kibana']
