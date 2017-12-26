@@ -14,6 +14,10 @@ setup(name='scope',
           'pyaml>=17.10.0',
           'aiohttp>=2.3.1',
       ],
+      extras_require={
+          'tests': ['pytest-asyncio',
+          ],
+      },
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
