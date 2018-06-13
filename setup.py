@@ -13,8 +13,7 @@ setup(name='scope',
       install_requires=[
           'pyaml>=17.10.0',
           'aiohttp>=2.3.1',
-          'elasticsearch-async>=5.2.0',
-          'certifi>=2017.11.5',
+          'rollbar>=0.14.0',
       ],
       extras_require={
           'tests': ['pytest-asyncio',
