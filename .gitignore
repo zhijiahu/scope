@@ -1,6 +1,10 @@
 # Scope specific ignore
 scope/scenarios/*.yml
+bin/
 
+# C++
+*.out
+*.o
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -49,6 +53,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+.pytest_cache
 
 # Translations
 *.mo
